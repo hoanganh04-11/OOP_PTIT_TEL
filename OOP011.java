@@ -21,6 +21,10 @@ class Product {
         this.price = price;
     }
 
+    public double getPrice() {
+        return price;
+    }
+
     public String getProductId() {
         return productId;
     }
@@ -28,27 +32,9 @@ class Product {
     public String getName() {
         return name;
     }
-
-    public double getPrice() {
-        return price;
-    }
-
-    public void setProductId(String productId) {
-        this.productId = productId;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setPrice(double price) {
-        this.price = price;
-    }
     
-    public void display(){
-        System.out.println("Sản phẩm: " + name + " (Mã: " + getProductId() + ")");
-        System.out.printf("Giá: %.1f\n", getPrice());
-    }
+    
+    
 }
 
 
@@ -56,45 +42,43 @@ class Order {
     private String orderId;
     private Product product;
     private int quantity;
-
-    public Order(String orderId, Product product, int quantity) {
+    
+    public Order(String orderId, Product product, int quantity){
         this.orderId = orderId;
         this.product = product;
         this.quantity = quantity;
     }
-
-    public int getQuantity() {
-        return quantity;
-    }
-    
-    
     
     public double calculateTotal(){
-        return getQuantity() * this.product.getPrice();
+        return quantity * product.getPrice();
     }
+
+    public Product getProduct() {
+        return product;
+    }
+
     
-    public void display(){
-        System.out.println("--- Thông tin đơn hàng ---");
-        System.out.println("Đơn hàng: " + orderId);
-        product.display();
-        System.out.println("Số lượng: " + getQuantity());
-        System.out.printf("Tổng tiền: %.1f\n", calculateTotal());
+    public String toString(){
+        return "Đơn hàng: " + orderId + "\n"
+            + "Sản phẩm: " + product.getName() + " (Mã: " + product.getProductId() + ")" + "\n"
+            + "Giá: " + String.format("%.1f", product.getPrice()) + "\n"
+            + "Số lượng: " + quantity + "\n"
+            + "Tổng tiền: " + String.format("%.1f", calculateTotal());
     }
 }
 
 public class OOP011 {
     static public void main(String[] args){
         Scanner sc = new Scanner(System.in);
-        String productId = sc.nextLine();
-        String name = sc.nextLine();
-        double price = sc.nextDouble();
+        String idProduct = sc.nextLine();
+        String nameProduct = sc.nextLine();
+        int priceProduct = sc.nextInt();
         sc.nextLine();
-        String orderId = sc.nextLine();
-        int quantity = sc.nextInt();
-        
-        Product a = new Product(productId, name, price);
-        Order b = new Order(orderId, a, quantity);
-        
-        b.display();
+        String idOrder = sc.nextLine();
+        int quantityProduct = sc.nextInt();
+        Product product = new Product(idProduct, nameProduct, priceProduct);
+        Order order = new Order(idOrder, product, quantityProduct);
+        System.out.println("--- Thông tin đơn hàng ---");
+        System.out.println(order);
     }
 }
