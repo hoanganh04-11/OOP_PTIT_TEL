@@ -10,6 +10,9 @@ package oop_tel_ptit;
  */
 import java.util.*;
 
+
+import java.util.*;
+
 class Note {
     private int id;
     private String content;
@@ -113,7 +116,7 @@ public class OOP005 {
             String[] part = line.split(" ", 3);
             
             if(part.length < 3){
-                System.out.println("Invalid input");
+                System.out.println("invalid input");
                 continue;
             }
             
@@ -130,14 +133,14 @@ public class OOP005 {
             }
             
             if(actor == null){
-                System.out.println("Invalid input");
+                System.out.println("invalid  input");
                 continue;
             }
             
             if(action.equals("Add")){
                 String[] addParts = content.split(" ", 2);
                 if(addParts.length < 2){
-                    System.out.println("Invalid input");
+                    System.out.println("invalid  input");
                     continue;
                 }
                 String date = addParts[0];
@@ -178,3 +181,4 @@ public class OOP005 {
         sc.close();
     }
 }
+
