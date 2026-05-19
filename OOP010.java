@@ -34,7 +34,7 @@ class Product {
     @Override
     public String toString(){
         return name + " " + "(" + weight + "kg) " + 
-            "can be found from the" + location;
+            "can be found from the " + location;
     }
 }
 
@@ -45,7 +45,7 @@ public class OOP010 {
         System.out.println(p1);
         Product p2 = new Product("Plaster", "home improvement section");
         System.out.println(p2);
-        Product p3 = new Product("Type", 5);
+        Product p3 = new Product("Tyre", 5);
         System.out.println(p3);
     }
 }
