@@ -27,8 +27,6 @@ class Student {
             System.out.println(name);
         }
     }
-    
-    
 }
 
 public class OOP009 {
@@ -36,12 +34,10 @@ public class OOP009 {
         Scanner sc = new Scanner(System.in);
         while(sc.hasNextLine()){
             String name = sc.nextLine();
-            if(!sc.hasNextLine()) break;
             int age = Integer.parseInt(sc.nextLine());
-            Student a = new Student(name, age);
-            a.display();
+            Student s = new Student(name, age);
+            s.display();
         }
         System.out.println(Student.numberOfStudent);
-        sc.close();
     }
 }
