@@ -1,183 +1,129 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package oop_tel_ptit;
 
-/**
- *
- * @author Hoang Anh
- */
-import java.util.*;
-
 
 import java.util.*;
 
-class Note {
-    private int id;
-    private String content;
-    private String date;
+class TaiKhoan{
+    private String id, name;
+    private ArrayList<String> ghiChu;
     
-    public Note(int id, String content, String date){
-        this.id = id;
-        this.content = content;
-        this.date = date;
+    public TaiKhoan(int id, String name){
+        this.id = String.format("%03d", id);
+        this.name = name;
+        this.ghiChu = new ArrayList<>();
     }
     
-    public void setId(int id){
-        this.id = id;
+    public String getName(){
+        return name;
     }
     
-    public int getId(){
-        return this.id;
+    public void themGhiChu(String s){
+        this.ghiChu.add(s);
     }
     
-    public String getContent(){
-        return this.content;
+    public void chiaSeGhiChu(TaiKhoan x, int id){
+        x.ghiChu.add(this.ghiChu.get(id));
     }
     
-    public String getDate(){
-        return this.date;
+    public int getSoLuongGhiChu(){
+        return ghiChu.size();
     }
     
-    // Jan0123
-    public String getFormatDate(){
-        String month = date.substring(0, 3);
-        String day = date.substring(3, 5);
-        String year = date.substring(5, 7);
-        return day + " " + month + " " + year;
-    }
-    
-    @Override
     public String toString(){
-        return getFormatDate() + " | " + content;
-    }
-    
-    
-}
-
-class Account {
-    private String id;
-    private String accountName;
-    private ArrayList<Note> notes = new ArrayList<>();
-    private int noteCount = 1;
-    
-    public Account(String id, String accountName){
-        this.id = id;
-        this.accountName = accountName;
-    }
-    
-    public String getId(){
-        return this.id;
-    }
-    
-    public void addNote(String content, String date){
-        notes.add(new Note(noteCount++, content, date));
-    }
-    
-    public void shareNote(Account target, int noteId){
-        for(Note note : this.notes){
-            if(note.getId() == noteId){
-                Note copy = new Note(target.noteCount++, note.getContent(), note.getDate());
-                target.notes.add(copy);
-                return;
-            }
+        String res = "Account: " + name + "\n";
+        for(String gc : ghiChu){
+            res += gc + "\n";
         }
-    }
-    
-    public void print(){
-        System.out.println("Account: " + this.accountName);
-        for(Note note : notes){
-            System.out.println(note);
-        }
+        return res.trim();
     }
 }
-
 
 
 public class OOP005 {
     public static void main(String[] args){
         Scanner sc = new Scanner(System.in);
-        int n = sc.nextInt();
-        sc.nextLine(); 
+        int n = Integer.parseInt(sc.nextLine());
+        ArrayList<TaiKhoan> a = new ArrayList<>();
         
-        ArrayList<Account> accounts = new ArrayList<>();
-        
-        for(int i=0; i<n; i++){
-           String name = sc.nextLine().trim(); 
-           String id = String.format("%03d", i+1);
-           accounts.add(new Account(id, name));
+        for(int i=1; i<=n; i++){
+            String name = sc.nextLine();
+            a.add(new TaiKhoan(i, name));
         }
         
+        int ok = 0;
         while(sc.hasNextLine()){
-            String line = sc.nextLine().trim();
-            if(line.equals("")) continue;
+            String d = sc.nextLine().trim();
+            if(d.isEmpty()) continue;
+            String[] w = d.split("\\s+");
             
-            String[] part = line.split(" ", 3);
-            
-            if(part.length < 3){
-                System.out.println("invalid input");
-                continue;
+            if(w.length < 2){
+                ok = 1;
+                break;
             }
-            
-            String accountId = part[0];
-            String action = part[1];
-            String content = part[2];
-            
-            Account actor = null;
-            for(Account a : accounts) {
-                if(a.getId().equals(accountId)){
-                    actor = a;
-                    break;
-                }
-            }
-            
-            if(actor == null){
-                System.out.println("invalid  input");
-                continue;
-            }
-            
-            if(action.equals("Add")){
-                String[] addParts = content.split(" ", 2);
-                if(addParts.length < 2){
-                    System.out.println("invalid  input");
-                    continue;
-                }
-                String date = addParts[0];
-                String noteContent = addParts[1];
-                actor.addNote(noteContent, date);
-            }
-            else if(action.equals("Share")){
-                //content = "002 1"
-                String[] shareParts = content.split(" ");
-                if(shareParts.length < 2){
-                    System.out.println("invalid input");
-                    continue;
-                }
-                String targetId = shareParts[0];
-                int noteId = Integer.parseInt(shareParts[1]);
-                
-                Account target = null;
-                for(Account a : accounts){
-                    if(a.getId().equals(targetId)){
-                        target = a;
+            String op = w[1];
+            try{
+                switch(op){
+                    case "Add":
+                        if(w.length < 3){
+                            ok = 1;
+                            break;
+                        }
+                        int userId = Integer.parseInt(w[0]);
+                        if(userId < 1 || userId > a.size()){
+                            ok = 1;
+                            break;
+                        }
+                        String date = w[2];
+                        if(date.length() != 7){
+                            ok = 1;
+                            break;
+                        }
+                        StringBuilder content = new StringBuilder();
+                        content.append(date.substring(3, 5)).append(" ").append(date.substring(0, 3)).append(" ").append(date.substring(5, 7)).append(" | ");
+                        for(int i=3; i<w.length; i++){
+                            content.append(w[i]).append(" ");
+                        }
+                        a.get(userId - 1).themGhiChu(content.toString().trim());
                         break;
-                    }
-                }
-                if(target == null){
-                    System.out.println("invalid input");
-                    continue;
-                }
-                
-                actor.shareNote(target, noteId);
+                        
+                    case "Share":
+                        if(w.length < 4){
+                            ok = 1;
+                            break;
+                        }
+                        int srcId = Integer.parseInt(w[0]);
+                        int dstId = Integer.parseInt(w[2]);
+                        int noteId = Integer.parseInt(w[3]);
+                        if(srcId < 1 || srcId > a.size() || dstId < 1 || dstId > a.size()){
+                            ok = 1;
+                            break;
+                        }
+                        TaiKhoan src = a.get(srcId - 1);
+                        TaiKhoan dst = a.get(dstId - 1);
+                        if(noteId < 1 || noteId > src.getSoLuongGhiChu()){
+                            ok = 1;
+                            break;
+                        }
+                        src.chiaSeGhiChu(dst, noteId - 1);
+                        break;
+                    default:
+                        ok = 1;
+                        break;
+                }   
             }
-            else{
-                System.out.println("invalid input");
+            catch(NumberFormatException | StringIndexOutOfBoundsException e){
+                ok = 1;
+                break;
             }
         }
-        for(Account a : accounts){
-            a.print();
-        }          
+        if(ok == 1) System.out.println("invalid input");
+        else{
+            for(TaiKhoan account : a){
+                System.out.println(account);
+            }
+        }
+        
         sc.close();
     }
 }
