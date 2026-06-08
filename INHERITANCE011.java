@@ -28,9 +28,9 @@ class Asset {
     @Override
     public String toString(){
         return "Asset Name: " + name + "\n" +
-                "Asset Value: " + value + "\n" +
-                "Depreciation: " + getDepreciation() + "\n" +
-                "---------------------------" + "\n";
+                "Asset Value: " + String.format("%.1f", value) + "\n" +
+                "Depreciation: " + String.format("%.1f", getDepreciation()) + "\n" +
+                "---------------------------";
     }
 }
 
